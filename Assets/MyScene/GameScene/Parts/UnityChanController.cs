@@ -45,8 +45,24 @@ public class UnityChanController : MonoBehaviour {
         {
             Move(keyInput, rotDeg);                     //キャラクタの移動、回転の実行
         }
+
+
+        GetKeys();                                  //キーボードから攻撃などの動作入力を受け取る
+
+
     }
 
+    //キー入力(平行移動、回転移動以外)
+    void GetKeys()
+    {
+        bool spaceKey = Input.GetKey(KeyCode.Space);
+
+        if (spaceKey)
+        {
+            Debug.Log("GETKEYS()");
+            m_Attack_Damage_Controller.Attack();
+        }
+    }
 
 
     //キー入力平行移動成分

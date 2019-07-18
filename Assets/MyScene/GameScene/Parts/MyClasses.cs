@@ -30,6 +30,15 @@ namespace MyClasses
         BODY = 1,
     }
 
+    //キャラクタが実行中の行動の種類
+    public enum enumAction
+    {
+        NONE,                                   //行動なし
+        ATTACK,                                 //攻撃
+        DEFENCE,                                //防御
+        RECOVER,                                //回復
+    }
+
 
 
     class BaseCharacter
@@ -39,6 +48,8 @@ namespace MyClasses
         private int m_MaxLife = 200;
         private float m_AlmostDyingRatio = 0.3f;
         private int m_Defence = 100;
+
+        private enumAction m_Action = enumAction.NONE;
 
         private enumState m_State = enumState.NORMAL;
         private float[] m_DamageRatio = { 0.75f, 1.25f };
@@ -133,6 +144,12 @@ namespace MyClasses
             get { return m_State; }
             set { m_State = value; }
         }
+        //キャラクタの行動
+        public enumAction Action
+        {
+            get { return m_Action; }
+            set { m_Action = value; }
+        }
 
         //キャラクタを蘇生させる
         public int Resurrection
@@ -140,6 +157,8 @@ namespace MyClasses
             set {
                 if (value > m_MaxLife) { this.m_Life = m_MaxLife; }
                 else { this.m_Life = value; }
+
+                m_Action = enumAction.RECOVER;
             }
         }
 
