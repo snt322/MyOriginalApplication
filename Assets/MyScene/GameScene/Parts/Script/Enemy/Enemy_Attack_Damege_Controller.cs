@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
 {
     [SerializeField]
@@ -19,13 +18,14 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
 	// Use this for initialization
 	void Start () {
         m_ThisHPBar = this.gameObject.GetComponentInChildren<EnemyHitPointBillBoard>() as EnemyHitPointBillBoard;
-        m_ThisAnimator = this.gameObject.GetComponent<Animator>() as Animator;            //このスクリプトがアタッチされているゲームオブジェクトのアニメータを取得する
-        m_Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Attack_Damage_Controller>();
+        m_ThisAnimator = this.gameObject.GetComponent<Animator>() as Animator;                                              //このスクリプトがアタッチされているゲームオブジェクトのアニメータを取得する
+
+        string tagStr = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.Player);         //PlayerタグのGameObjectのAttack_Damage_Controllerスクリプトを取得する
+        m_Player = GameObject.FindGameObjectWithTag(tagStr).GetComponent<Attack_Damage_Controller>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-//        Debug.Log("Enemy : " + ((ITestInterface)m_Player).OverrideMe(""));
     }
 
 
@@ -34,34 +34,40 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
         return m_Condition.AttackPoint(means);
     }
 
-    void OnTriggerEnter(Collider colider)
+    void OnTriggerEnter(Collider collider)
     {
         string tagStr;
-        tagStr = colider.tag;
+        tagStr = collider.tag;
 
-        Debug.Log("enemage OnTriggerEnter");
+        /*
+         * string collider.tagをEnumeratorに変換し、switch文でEnumeratorを定数式に使用する
+         * 
+         * NinaLabo様ホームページ参照
+         * http://ninagreen.hatenablog.com/entry/2015/08/25/201607
+         */
+        MyEnumerator.EnumeratorTag enumTag = (MyEnumerator.EnumeratorTag)System.Enum.Parse(typeof(MyEnumerator.EnumeratorTag), collider.tag);
 
-        switch (tagStr)
+        switch (enumTag)
         {
-            case "UnityChanWeapon":                     //UnityChanの武器に接触した場合
+            case MyEnumerator.EnumeratorTag.UnityChanWeapon:             //UnityChanの武器に接触した場合
                 {
-                    if (colider.GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("ATTACK"))       //UnityChanが攻撃モーション中であれば
+                    if (collider.GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(MyAnimationStateNames.StateNames.ATTACK))       //UnityChanが攻撃モーション中であれば
                     {
                         int damage = ((IDamage)m_Player).Damage(MyClasses.enumAttackMeans.WEAPON);
                         int confirmedDamage = m_Condition.DamagedPoint(damage);
                         m_ThisHPBar.HitPointBarValue = (float)m_Condition.Life / m_Condition.MaxLife;
-                        Debug.Log(this.name + " : 被ダメージ " + confirmedDamage + " : " + (float)m_Condition.Life / m_Condition.MaxLife);
+                        MyDebug.MyDebugLog.Log(this.name + " : 被ダメージ " + confirmedDamage + " : " + (float)m_Condition.Life / m_Condition.MaxLife);
                     }
                     else
                     {
-                        Debug.Log("攻撃中でないのでダメージはありません。");
+                        MyDebug.MyDebugLog.Log("攻撃中でないのでダメージはありません。");
                     }
                 }
                 break;
             default:
                 //武器以外に接触した場合はダメージを受けない
                 break;
-        }
+        }//switch
 
     }
 
@@ -76,6 +82,9 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
         private set { m_Condition.Action = value; }
     }
 
+    /// <summary>
+    /// enumActionをNONEにリセットする
+    /// </summary>
     public void ResetAction()
     {
         EnemyAction = MyClasses.enumAction.NONE;

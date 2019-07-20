@@ -29,8 +29,6 @@ public class CentralUIController : MonoBehaviour {
     [SerializeField]
     private Image m_HitPointProgressBar = null;
 
-    [SerializeField]
-    private Button m_MenuButton = null;
 
 
 

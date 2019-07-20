@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectGenerator : MonoBehaviour {
+public class EnemyGenerator : MonoBehaviour {
     [SerializeField]
     GameObject m_EnemyObj = null;
 
