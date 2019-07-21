@@ -27,6 +27,7 @@ namespace MyEnumerator
         UnityChanResurectionTag,
         UnityChanWeapon,
         EnemyHitPointTag,
+        Enemy_Raycast_Search,
 
     }
 

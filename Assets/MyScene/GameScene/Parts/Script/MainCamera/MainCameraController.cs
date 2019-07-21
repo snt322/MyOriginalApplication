@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 
-public class MainCameraController : MonoBehaviour {
+public class MainCameraController : MonoBehaviour
+{
 
     GameObject m_GObjThirdPerson = null;                //三人称視点時のMainCameraの親オブジェクト
     GameObject m_GObjFirstPerson = null;                //一人称視点時のMainCameraの親オブジェクト
@@ -23,7 +25,8 @@ public class MainCameraController : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         //enumeratorからstringを取得する
         string strFirst = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.FirstPersonPerspective);
         string strThird = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.ThirdPersonPerspective);
@@ -33,7 +36,8 @@ public class MainCameraController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
 
     }
 
@@ -112,31 +116,32 @@ public class MainCameraController : MonoBehaviour {
 
     }
 
-    private void OnValidate()
-    {
-        SetCameraPosDir(m_ThirdPersonPerspective);
-    }
-
-    private void OnEnable()
-    {
-        //enumeratorからstringを取得する
-        string strFirst = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.FirstPersonPerspective);
-        string strThird = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.ThirdPersonPerspective);
-
-        Debug.Log(strFirst);
-        Debug.Log(strThird);
-        Debug.Log("ThirdPersonPerspective");
-
-        m_GObjThirdPerson = GameObject.FindGameObjectWithTag("ThirdPersonPerspective") as GameObject;
-        m_GObjFirstPerson = GameObject.FindGameObjectWithTag(strFirst) as GameObject;
-
-        if (m_GObjFirstPerson == null)
+    /*
+        /// <summary>
+        /// エディタ拡張を習得してから修正すること
+        /// </summary>
+        private void OnValidate()
         {
-            Debug.Log("first is null");
+            SetCameraPosDir(m_ThirdPersonPerspective);
         }
-        if (m_GObjThirdPerson == null)
+    */
+
+    [CustomEditor(typeof(MainCameraController))]//拡張するクラスを指定
+    public class MainCameraControllerEditor : Editor
+    {
+        /// <summary>
+        /// InspectorのGUIを更新
+        /// </summary>
+        public override void OnInspectorGUI()
         {
-            Debug.Log("third is null");
+            //元のInspector部分を表示
+            base.OnInspectorGUI();
+            var mainCameraController = target as MainCameraController;
+            //ボタンを表示
+            if (GUILayout.Button("SetCameraPosDir"))
+            {
+                mainCameraController.SetCameraPosDir(!mainCameraController.m_ThirdPersonPerspective);
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
 
     private EnemyHitPointBillBoard m_ThisHPBar = null;
 
-    private MyClasses.BaseCharacter m_Condition = new MyClasses.BaseCharacter(100, 100, MyClasses.enumState.NORMAL);
+    private MyClasses.BaseCharacter m_Condition = new MyClasses.BaseCharacter(100, 100, MyClasses.enumHealthState.NORMAL);
 
 	// Use this for initialization
 	void Start () {
@@ -46,7 +46,7 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
          * http://ninagreen.hatenablog.com/entry/2015/08/25/201607
          */
         MyEnumerator.EnumeratorTag enumTag = (MyEnumerator.EnumeratorTag)System.Enum.Parse(typeof(MyEnumerator.EnumeratorTag), collider.tag);
-
+        
         switch (enumTag)
         {
             case MyEnumerator.EnumeratorTag.UnityChanWeapon:             //UnityChanの武器に接触した場合
@@ -72,7 +72,7 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
     }
 
 
-    public MyClasses.enumState EnemyState
+    public MyClasses.enumHealthState EnemyHealthState
     {
         get { return m_Condition.State; }
     }
@@ -94,6 +94,6 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
     //MyClasses.BaseCharacter m_Condition.m_State = MyClasses.enumState.NORMAL;を実行。
     public void EnemyStateNormal()
     {
-        m_Condition.State = MyClasses.enumState.NORMAL;
+        m_Condition.State = MyClasses.enumHealthState.NORMAL;
     }
 }

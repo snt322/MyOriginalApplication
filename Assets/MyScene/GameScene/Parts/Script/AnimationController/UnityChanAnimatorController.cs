@@ -81,18 +81,18 @@ public class UnityChanAnimatorController : MonoBehaviour {
         m_Animator.SetFloat(AnimatorParaName.Speed, frontBackSpeed);
         m_Animator.SetFloat(AnimatorParaName.Turn, turnSpeed);
 
-        switch(m_AttackDamageController.PlayerState)
+        switch(m_AttackDamageController.PlayerHealthState)
         {
-            case MyClasses.enumState.ALMOST_DYING:
+            case MyClasses.enumHealthState.ALMOST_DYING:
                 //今のところ瀕死モーションは実装しない。
                 break;
-            case MyClasses.enumState.NORMAL:                        //正常な状態
+            case MyClasses.enumHealthState.NORMAL:                        //正常な状態
                 m_Animator.SetInteger(AnimatorParaName.Die, 0);
                 break;
-            case MyClasses.enumState.DEAD:                          //倒された場合
+            case MyClasses.enumHealthState.DEAD:                          //倒された場合
                 m_Animator.SetInteger(AnimatorParaName.Die, -1);
                 break;
-            case MyClasses.enumState.GET_DAMAGE:                    //ダメージを受けた場合
+            case MyClasses.enumHealthState.GET_DAMAGE:                    //ダメージを受けた場合
                 m_Animator.SetBool(AnimatorParaName.Get_Damage, true);
                 break;
         }

@@ -10,6 +10,9 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
 
     private MyClasses.BaseCharacter m_Condition = new MyClasses.BaseCharacter();
 
+    [SerializeField]
+    ParticleSystem m_AttackEffectParticle = null;
+
 
     // Use this for initialization
     void Start () {
@@ -28,6 +31,7 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     /// <returns></returns>
     int IDamage.Damage(enumAttackMeans means)
     {
+        m_AttackEffectParticle.Play();
         return m_Condition.AttackPoint(means);
     }
 
@@ -97,7 +101,7 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     {
         get { return this.m_Condition.MaxLife; }
     }
-    public MyClasses.enumState PlayerState
+    public MyClasses.enumHealthState PlayerHealthState
     {
         get { return m_Condition.State; }
     }
@@ -129,6 +133,6 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     /// </summary>
     public void PlayerStateNormal()
     {
-        m_Condition.State = enumState.NORMAL;
+        m_Condition.State = enumHealthState.NORMAL;
     }
 }

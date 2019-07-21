@@ -42,24 +42,23 @@ public class EnemyAnimationController : MonoBehaviour {
 
             frontBackSpeed = v.z;
             turnSpeed = -v.x;
-
-
+            
             m_Animator.SetFloat(AnimatorParaName.Speed, frontBackSpeed);
             m_Animator.SetFloat(AnimatorParaName.Turn, turnSpeed);
         }
 
-        switch (m_Enemy_Attack.EnemyState)
+        switch (m_Enemy_Attack.EnemyHealthState)
         {
-            case MyClasses.enumState.ALMOST_DYING:
+            case MyClasses.enumHealthState.ALMOST_DYING:
                 //今のところ瀕死モーションは実装しない。
                 break;
-            case MyClasses.enumState.NORMAL:                        //正常な状態
+            case MyClasses.enumHealthState.NORMAL:                        //正常な状態
                 m_Animator.SetInteger(AnimatorParaName.Die, 0);
                 break;
-            case MyClasses.enumState.DEAD:                          //倒された場合
+            case MyClasses.enumHealthState.DEAD:                          //倒された場合
                 m_Animator.SetInteger(AnimatorParaName.Die, -1);
                 break;
-            case MyClasses.enumState.GET_DAMAGE:                    //ダメージを受けた場合
+            case MyClasses.enumHealthState.GET_DAMAGE:                    //ダメージを受けた場合
                 m_Animator.SetBool(AnimatorParaName.Get_Damage, true);
                 break;
         }
@@ -91,12 +90,12 @@ public class EnemyAnimationController : MonoBehaviour {
         if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName("ATTACK"))
         {
             m_Animator.SetBool(AnimatorParaName.Attack, false);                     //攻撃アニメーションのフラグをクリア
-            m_Enemy_Attack.ResetAction();                                 //攻撃行動のフラグをクリア
+            m_Enemy_Attack.ResetAction();                                           //攻撃行動のフラグをクリア
         }
         if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName("RECOVER"))
         {
             m_Animator.SetBool(AnimatorParaName.Recover, false);                     //攻撃アニメーションのフラグをクリア
-            m_Enemy_Attack.ResetAction();                                  //攻撃行動のフラグをクリア
+            m_Enemy_Attack.ResetAction();                                            //攻撃行動のフラグをクリア
         }
 
 

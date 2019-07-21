@@ -11,6 +11,7 @@ TagManager:
   - UnityChanResurectionTag
   - UnityChanWeapon
   - EnemyHitPointTag
+  - Enemy_Raycast_Search
   layers:
   - Default
   - TransparentFX

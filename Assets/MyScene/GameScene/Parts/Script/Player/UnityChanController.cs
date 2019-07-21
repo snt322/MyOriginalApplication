@@ -39,7 +39,7 @@ public class UnityChanController : MonoBehaviour {
         float rotDeg = 0;
         Vector3 keyInput = GetInput(ref rotDeg);    //戻り値はキャラクタのローカル座標方向のキー入力、戻り値ref rotDegはローカル座標Y軸周りの回転
 
-        bool isUnityChanNotDead = m_Attack_Damage_Controller.PlayerState != MyClasses.enumState.DEAD;          //UnityChanが倒された場合
+        bool isUnityChanNotDead = m_Attack_Damage_Controller.PlayerHealthState != MyClasses.enumHealthState.DEAD;          //UnityChanが倒された場合
         bool isUnityChanDamageMotion = m_UnityChanAnimatorController.isDAMAGE_AnimationPlaying();              //UnityChanがダメージを受けるモーションを実行中?
         if (isUnityChanNotDead && !isUnityChanDamageMotion)                                                    //UnityChanが倒されている、または、被ダメージモーション中の場合はUnityChanは行動できない
         {

@@ -7,7 +7,7 @@ namespace MyClasses
 {
 
     //キャラクタの状態
-    public enum enumState
+    public enum enumHealthState
     {
         NORMAL = 1,
         ALMOST_DYING = 0,
@@ -51,7 +51,7 @@ namespace MyClasses
 
         private enumAction m_Action = enumAction.NONE;
 
-        private enumState m_State = enumState.NORMAL;
+        private enumHealthState m_State = enumHealthState.NORMAL;
         private float[] m_DamageRatio = { 0.75f, 1.25f };
 
         public BaseCharacter() {
@@ -61,7 +61,7 @@ namespace MyClasses
             m_Attacks[0] = 110;                                                  //武器による攻撃力を設定
             m_Attacks[1] = 10;                                                   //体による攻撃力を設定
         }                                                                        //初期値のままのコンストラクタ
-        public BaseCharacter(int life, int defence, enumState state, float damageRatioMin = 0.75f, float damageRatioMax = 1.25f)
+        public BaseCharacter(int life, int defence, enumHealthState state, float damageRatioMin = 0.75f, float damageRatioMax = 1.25f)
         {
             int len = System.Enum.GetValues(typeof(enumAttackMeans)).Length;    //enumAttakMeansの数だけ攻撃力の数を指定
             m_Attacks = new int[len];
@@ -117,15 +117,15 @@ namespace MyClasses
             {
                 m_Life = 0;                                             //ライフが0より小さくなる場合はm_Life = 0にする
 
-                m_State = enumState.DEAD;                               //倒された場合
+                m_State = enumHealthState.DEAD;                               //倒された場合
             }
             else if (((float)m_Life / m_MaxLife) < m_AlmostDyingRatio)
             {
-                m_State = enumState.ALMOST_DYING;                       //瀕死の場合、※アニメーションは未実装で無視される
+                m_State = enumHealthState.ALMOST_DYING;                       //瀕死の場合、※アニメーションは未実装で無視される
             }
             else
             {
-                m_State = enumState.GET_DAMAGE;                         //ダメージを受けた状態へ         
+                m_State = enumHealthState.GET_DAMAGE;                         //ダメージを受けた状態へ         
                                                                         //ダメージを受けた場合のモーションへ
             }
         }
@@ -139,7 +139,7 @@ namespace MyClasses
         public int MaxLife { get { return m_MaxLife; } }
 
         //キャラクタの状態
-        public enumState State
+        public enumHealthState State
         {
             get { return m_State; }
             set { m_State = value; }
