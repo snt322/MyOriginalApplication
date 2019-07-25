@@ -12,7 +12,9 @@ public class EnemyHitPointBillBoard : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
         m_BillBoardTargetCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>() as Camera;
+
 
         UnityEngine.UI.Image[] images = GetComponentsInChildren<UnityEngine.UI.Image>() as UnityEngine.UI.Image[];
         foreach(UnityEngine.UI.Image img in images)

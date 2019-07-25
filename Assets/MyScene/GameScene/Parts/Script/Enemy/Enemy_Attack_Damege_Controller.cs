@@ -51,12 +51,25 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
         {
             case MyEnumerator.EnumeratorTag.UnityChanWeapon:             //UnityChanの武器に接触した場合
                 {
-                    if (collider.GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(MyAnimationStateNames.StateNames.ATTACK))       //UnityChanが攻撃モーション中であれば
+                    string strAniStateName = System.Enum.GetName(typeof(MyAnimationStateNames.StateNames), MyAnimationStateNames.StateNames.ATTACK);
+                    if (collider.GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(strAniStateName))       //UnityChanが攻撃モーション中であれば
                     {
                         int damage = ((IDamage)m_Player).Damage(MyClasses.enumAttackMeans.WEAPON);
                         int confirmedDamage = m_Condition.DamagedPoint(damage);
                         m_ThisHPBar.HitPointBarValue = (float)m_Condition.Life / m_Condition.MaxLife;
                         MyDebug.MyDebugLog.Log(this.name + " : 被ダメージ " + confirmedDamage + " : " + (float)m_Condition.Life / m_Condition.MaxLife);
+
+                        GameObject particleSystem = GameObject.Find("UnityChanStaffEffect");
+                        ParticleSystem pSystem = particleSystem.GetComponent<ParticleSystem>();
+
+                        Vector3 pos = this.gameObject.transform.position;
+                        pos.y += this.GetComponent<CharacterController>().height;
+
+                        pSystem.transform.position = pos;
+                        pSystem.transform.forward = this.gameObject.transform.up;
+
+                        pSystem.Play();
+
                     }
                     else
                     {
@@ -74,12 +87,20 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
 
     public MyClasses.enumHealthState EnemyHealthState
     {
-        get { return m_Condition.State; }
+        get { return m_Condition.HealthState; }
     }
     public MyClasses.enumAction EnemyAction
     {
         get { return m_Condition.Action; }
         private set { m_Condition.Action = value; }
+    }
+
+    /// <summary>
+    /// enumActionにATTACK攻撃中をセット
+    /// </summary>
+    public void Attack()
+    {
+        EnemyAction = MyClasses.enumAction.ATTACK;
     }
 
     /// <summary>
@@ -94,6 +115,6 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
     //MyClasses.BaseCharacter m_Condition.m_State = MyClasses.enumState.NORMAL;を実行。
     public void EnemyStateNormal()
     {
-        m_Condition.State = MyClasses.enumHealthState.NORMAL;
+        m_Condition.HealthState = MyClasses.enumHealthState.NORMAL;
     }
 }

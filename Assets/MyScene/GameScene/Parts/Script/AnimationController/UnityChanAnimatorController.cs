@@ -62,10 +62,11 @@ public class UnityChanAnimatorController : MonoBehaviour {
         SetAnimatorParameter();
         
     }
-
-    //Attack_Damage_Controllerスクリプトの
-    //メンバークラスMyClasses.BaseCharacter m_Condition.m_Stateに応じてアニメーションを変更する
-    //AnimatorControllerにParameteをセットする
+    /* 
+     * Attack_Damage_Controllerスクリプトの
+    *  メンバークラスMyClasses.BaseCharacter m_Condition.m_Stateに応じてアニメーションを変更する
+    *  AnimatorControllerにParameteをセットする
+    * */
     private void SetAnimatorParameter()
     {
         float frontBackSpeed;
@@ -87,7 +88,7 @@ public class UnityChanAnimatorController : MonoBehaviour {
                 //今のところ瀕死モーションは実装しない。
                 break;
             case MyClasses.enumHealthState.NORMAL:                        //正常な状態
-                m_Animator.SetInteger(AnimatorParaName.Die, 0);
+                m_Animator.SetInteger(AnimatorParaName.Die, 1);
                 break;
             case MyClasses.enumHealthState.DEAD:                          //倒された場合
                 m_Animator.SetInteger(AnimatorParaName.Die, -1);
@@ -98,7 +99,8 @@ public class UnityChanAnimatorController : MonoBehaviour {
         }
 
         //実行中のアニメーションが連続で実行されないようにする
-        if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName("DAMAGE"))              //ダメージを受けたアニメーションを開始したら
+        string strAniStateName = System.Enum.GetName(typeof(MyAnimationStateNames.StateNames), MyAnimationStateNames.StateNames.DAMAGE);
+        if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName(strAniStateName))        //ダメージを受けたアニメーションを開始したら
         {
             m_Animator.SetBool(AnimatorParaName.Get_Damage, false);                  //ダメージを受けたモーションのフラグをクリア
             m_AttackDamageController.PlayerStateNormal();                            //PlayerState=Normalにするメソッドを呼び出す。
@@ -121,25 +123,40 @@ public class UnityChanAnimatorController : MonoBehaviour {
         }
 
         //実行中のアニメーションが連続で実行されないようにする
-        if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName("ATTACK"))
+        strAniStateName = System.Enum.GetName(typeof(MyAnimationStateNames.StateNames), MyAnimationStateNames.StateNames.ATTACK);
+        if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName(strAniStateName))
         {
             m_Animator.SetBool(AnimatorParaName.Attack, false);                     //攻撃アニメーションのフラグをクリア
             m_AttackDamageController.ResetAction();                                 //攻撃行動のフラグをクリア
         }
-        if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName("RECOVER"))
+        strAniStateName = System.Enum.GetName(typeof(MyAnimationStateNames.StateNames), MyAnimationStateNames.StateNames.RECOVER);
+        if (m_Animator.GetCurrentAnimatorStateInfo(0).IsName(strAniStateName))
         {
-            m_Animator.SetBool(AnimatorParaName.Recover, false);                     //攻撃アニメーションのフラグをクリア
-            m_AttackDamageController.ResetAction();                                  //攻撃行動のフラグをクリア
+            m_Animator.SetBool(AnimatorParaName.Recover, false);                     //回復アニメーションのフラグをクリア
+            m_AttackDamageController.ResetAction();                                  //回復行動のフラグをクリア
         }
 
 
     }
 
+    /// <summary>
+    /// アニメーションRecoveryを再生中かどうかを返す
+    /// </summary>
+    public bool isRecover_AnimationPlaying()
+    {
+               string strAniStateName = System.Enum.GetName(typeof(MyAnimationStateNames.StateNames), MyAnimationStateNames.StateNames.RECOVER);
+//        string strAniStateName = "RECOVER";
+        return m_Animator.GetCurrentAnimatorStateInfo(0).IsName(strAniStateName);
+    }
+    /// <summary>
+    /// アニメーションDAMAGEを再生中かどうかを返す
+    /// </summary>
+    /// <returns></returns>
 
-    //アニメーションDAMAGEを再生中どうかを返す
     public bool isDAMAGE_AnimationPlaying()
     {
-        return m_Animator.GetCurrentAnimatorStateInfo(0).IsName("DAMAGE");
+        string strAniStateName = System.Enum.GetName(typeof(MyAnimationStateNames.StateNames), MyAnimationStateNames.StateNames.DAMAGE);
+        return m_Animator.GetCurrentAnimatorStateInfo(0).IsName(strAniStateName);
     }
 
 }

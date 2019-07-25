@@ -10,19 +10,10 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
 
     private MyClasses.BaseCharacter m_Condition = new MyClasses.BaseCharacter();
 
-    [SerializeField]
-    ParticleSystem m_AttackEffectParticle = null;
-
-
     // Use this for initialization
     void Start () {
 	}
 	
-	// Update is called once per frame
-	void Update ()
-    {
-
-    }
 
     /// <summary>
     /// 
@@ -31,7 +22,6 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     /// <returns></returns>
     int IDamage.Damage(enumAttackMeans means)
     {
-        m_AttackEffectParticle.Play();
         return m_Condition.AttackPoint(means);
     }
 
@@ -44,6 +34,8 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
         obj.GetComponent<ParticleSystem>().Play();
 
         m_Condition.Resurrection = m_Condition.MaxLife;
+
+        m_Condition.HealthState = enumHealthState.NORMAL;
     }
 
 
@@ -58,7 +50,8 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
         {
             case MyEnumerator.EnumeratorTag.EnemyWeapon:                    //EnemyWeaponに接触した場合
                 {
-                    if (collider.transform.root.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(MyAnimationStateNames.StateNames.ATTACK))
+                    string strAniStateName = System.Enum.GetName(typeof(MyAnimationStateNames.StateNames), MyAnimationStateNames.StateNames.ATTACK);
+                    if (collider.transform.root.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(strAniStateName))
                     {
                         Enemy_Attack_Damege_Controller enemyDamageController = collider.GetComponentInParent<Enemy_Attack_Damege_Controller>();
                         int damage = ((IDamage)enemyDamageController).Damage(enumAttackMeans.WEAPON);
@@ -103,7 +96,7 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     }
     public MyClasses.enumHealthState PlayerHealthState
     {
-        get { return m_Condition.State; }
+        get { return m_Condition.HealthState; }
     }
     public MyClasses.enumAction PlayerAction
     {
@@ -133,6 +126,6 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     /// </summary>
     public void PlayerStateNormal()
     {
-        m_Condition.State = enumHealthState.NORMAL;
+        m_Condition.HealthState = enumHealthState.NORMAL;
     }
 }

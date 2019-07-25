@@ -139,7 +139,7 @@ namespace MyClasses
         public int MaxLife { get { return m_MaxLife; } }
 
         //キャラクタの状態
-        public enumHealthState State
+        public enumHealthState HealthState
         {
             get { return m_State; }
             set { m_State = value; }

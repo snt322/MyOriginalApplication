@@ -6,7 +6,8 @@ using UnityEngine;
 /// 実行中のアニメーションを判定するために使用
 /// </summary>
 namespace MyAnimationStateNames
-{ 
+{
+/*
     public static class StateNames
     {
         public static readonly string DIE = "DIE";
@@ -14,5 +15,14 @@ namespace MyAnimationStateNames
         public static readonly string ATTACK = "ATTACK";
         public static readonly string RECOVER = "RECOVER";
         public static readonly string DAMAGE = "DAMAGE";
+    }
+*/
+    public enum StateNames
+    {
+        DIE,
+        WALK_RUN,
+        ATTACK,
+        RECOVER,
+        DAMAGE,
     }
 }
