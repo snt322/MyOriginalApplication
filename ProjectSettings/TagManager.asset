@@ -12,6 +12,10 @@ TagManager:
   - UnityChanWeapon
   - EnemyHitPointTag
   - Enemy_Raycast_Search
+  - UnityChan_LifeProgressBar
+  - UnityChan_MagicAttack
+  - Button_Menu
+  - Button_Pause_Save
   layers:
   - Default
   - TransparentFX
@@ -28,7 +32,7 @@ TagManager:
   - 
   - Enamy
   - Player
-  - 
+  - Player_Attack_Magic
   - 
   - 
   - 
