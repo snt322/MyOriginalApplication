@@ -123,7 +123,7 @@ public class UnityChanAnimatorController : MonoBehaviour {
             case MyClasses.enumAction.ATTACK:
                 m_Animator.SetBool(AnimatorParaName.Attack, true);
                 break;
-            case MyClasses.enumAction.MAGIC_EXPLOSION:
+            case MyClasses.enumAction.MAGIC_Damage:
                 m_Animator.SetBool(AnimatorParaName.Magic, true);
                 break;
             default:

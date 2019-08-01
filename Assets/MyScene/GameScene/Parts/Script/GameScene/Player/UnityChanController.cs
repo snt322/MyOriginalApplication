@@ -94,8 +94,7 @@ public class UnityChanController : MonoBehaviour {
         //バックの場合
         if(moveDir.z < 0)
         {
-            moveDir 
-                = moveDir * m_MaxBackSpeed * Time.deltaTime;
+            moveDir = moveDir * m_MaxBackSpeed * Time.deltaTime;
         }
         else
         {

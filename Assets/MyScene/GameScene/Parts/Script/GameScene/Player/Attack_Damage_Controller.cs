@@ -26,7 +26,7 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     }
 
     //Restartボタンを押した場合
-    public void Restart_ButtonClick()
+    public void Heal()
     {
         string tagStr = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.Player);
 
@@ -99,7 +99,7 @@ public class Attack_Damage_Controller : MonoBehaviour , IDamage
     /// </summary>
     public void UseMagic()
     {
-        PlayerAction = enumAction.MAGIC_EXPLOSION;
+        PlayerAction = enumAction.MAGIC_Damage;
     }
 
 

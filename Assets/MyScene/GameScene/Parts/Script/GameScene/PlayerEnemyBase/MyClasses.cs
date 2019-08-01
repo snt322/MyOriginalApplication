@@ -37,7 +37,8 @@ namespace MyClasses
         ATTACK,                                 //攻撃
         DEFENCE,                                //防御
         RECOVER,                                //回復
-        MAGIC_EXPLOSION,                        //爆発魔法
+        MAGIC_Damage,                           //魔法(攻撃)
+        MAGIC_HEAL,                             //魔法(回復)
     }
 
 
