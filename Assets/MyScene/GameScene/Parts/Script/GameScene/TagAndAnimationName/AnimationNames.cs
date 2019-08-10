@@ -15,6 +15,7 @@ namespace MyAnimationStateNames
         RECOVER,
         DAMAGE,
         MAGIC,
+        DIE_Delete,
     }
 
     public enum EquipmentStateName

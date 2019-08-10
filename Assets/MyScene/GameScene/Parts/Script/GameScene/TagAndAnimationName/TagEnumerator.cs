@@ -33,6 +33,7 @@ namespace MyEnumerator
         Button_Menu,
         Button_Pause_Save,
         Button_StartScene,
+        Score,
     }
 
 }

@@ -130,4 +130,9 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
     {
         m_Condition.HealthState = MyClasses.enumHealthState.NORMAL;
     }
+
+    public int GetThisLife()
+    {
+        return m_Condition.Life;
+    }
 }

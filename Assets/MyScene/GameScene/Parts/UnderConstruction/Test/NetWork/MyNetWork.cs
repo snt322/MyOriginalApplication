@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UnityEngine.Networking;
 
-public class NewBehaviourScript : MonoBehaviour
+public class MyNetWork : MonoBehaviour
 {
 
     NetworkClient myClient;

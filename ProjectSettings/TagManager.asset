@@ -16,6 +16,8 @@ TagManager:
   - UnityChan_MagicAttack
   - Button_Menu
   - Button_Pause_Save
+  - Score
+  - OnlyOneObjInApp
   layers:
   - Default
   - TransparentFX

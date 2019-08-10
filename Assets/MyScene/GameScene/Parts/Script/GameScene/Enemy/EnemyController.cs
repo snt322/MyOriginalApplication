@@ -343,5 +343,4 @@ public class EnemyController : MonoBehaviour
         moveDistPerFrame.y = 0;
     }
 
-
 }

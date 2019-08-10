@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class StartButtonScript : MonoBehaviour {
 
-    [SerializeField]
+    [SerializeField, TooltipAttribute("RootオブジェクトUIをセットしてください")]
     private Animator m_Animator = null;
 
 
 
     public void Button_LoadScene()
     {
-        m_Animator.SetBool("IsShowLoadMenu", true);
+        m_Animator.SetBool("IsHideMainMenu", true);
         StartCoroutine("MyLoadScene", 0.5f);
     }
 

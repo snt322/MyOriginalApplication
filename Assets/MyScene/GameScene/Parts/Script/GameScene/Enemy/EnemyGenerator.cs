@@ -6,6 +6,15 @@ public class EnemyGenerator : MonoBehaviour {
     [SerializeField]
     GameObject m_EnemyObj = null;
 
+    [SerializeField]
+    GameObject m_BossObj = null;
+
+
+    List<GameObject> enemyList = new List<GameObject>();
+
+    //仮のスコア
+    private int m_Score = 0;
+
 
 
 
@@ -21,7 +30,6 @@ public class EnemyGenerator : MonoBehaviour {
 
     IEnumerator GenerateEnemy()
     {
-        List<GameObject> enemyList = new List<GameObject>();
         
         for(; ;)
         {
@@ -44,7 +52,7 @@ public class EnemyGenerator : MonoBehaviour {
             }
 
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(5f);
         }
     }
 }
