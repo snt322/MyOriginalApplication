@@ -51,7 +51,6 @@ public class UnityChanController : MonoBehaviour
         float rotDeg = m_RoteDeg;
         Vector3 keyInput = m_Input;
 
-//        Vector3 keyInput = GetInput(ref rotDeg);    //戻り値はキャラクタのローカル座標方向のキー入力、戻り値ref rotDegはローカル座標Y軸周りの回転
 
         bool isUnityChanNotDead = m_Attack_Damage_Controller.PlayerHealthState != MyClasses.enumHealthState.DEAD;          //UnityChanが倒された場合
         bool isUnityChanDamageMotion = m_UnityChanAnimatorController.isDAMAGE_AnimationPlaying();                          //UnityChanがダメージを受けるモーションを実行中?
@@ -62,37 +61,12 @@ public class UnityChanController : MonoBehaviour
         }
 
 
-        GetKeys();                                  //キーボードから攻撃などの動作入力を受け取る
+//        GetKeys();                                  //キーボードから攻撃などの動作入力を受け取る
 
 
     }
 
-    //キー入力(平行移動、回転移動以外)
-    void GetKeys()
-    {
-        bool spaceKey = Input.GetKey(KeyCode.Space);
 
-        if (spaceKey)
-        {
-            Debug.Log("GETKEYS()");
-            m_Attack_Damage_Controller.Attack();
-        }
-    }
-
-
-    //キー入力平行移動成分
-    Vector3 GetInput(ref float yRot)
-    {
-        float x = Input.GetAxis("SideStep");        //ローカル座標X軸方向の移動
-        float y = m_Gravity;                        //ローカル座標Y軸方向の移動(重力)
-        float z = Input.GetAxis("Vertical");        //ローカル座標Z軸方向の移動
-
-        yRot = Input.GetAxis("Horizontal");         //ローカル座標Y軸周りの回転
-
-
-
-        return new Vector3(x, y, z);
-    }
 
     //void Move
     //モデルを回転、移動させる
