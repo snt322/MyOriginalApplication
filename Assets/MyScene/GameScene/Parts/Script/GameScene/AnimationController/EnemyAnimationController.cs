@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAnimationController : MonoBehaviour {
-
-    [SerializeField]
+public class EnemyAnimationController : MonoBehaviour
+{
     private CharacterController m_CharacterController = null;
 
     [SerializeField]
@@ -14,22 +13,25 @@ public class EnemyAnimationController : MonoBehaviour {
     private Enemy_Attack_Damege_Controller m_Enemy_Attack = null;
 
 
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start()
+    {
+        m_CharacterController = gameObject.GetComponent<CharacterController>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         //アニメーションのパラメータをセット
         SetAnimatorParameter();
-	}
+    }
 
     /*
      *  Enemy_Attack_Damage_Controllerスクリプトの 
      *  メンバークラスMyClasses.BaseCharacter m_Condition.m_Stateに応じてアニメーションを変更する
      *  EnemyAnimatorControllerにParameterをセットする
      */
-     private void SetAnimatorParameter()
+    private void SetAnimatorParameter()
     {
         float frontBackSpeed;
         float turnSpeed;
@@ -38,11 +40,17 @@ public class EnemyAnimationController : MonoBehaviour {
         if (m_CharacterController != null)
         {
             Vector3 v = m_CharacterController.velocity;                             //velocityはワールド座標系での速度となる
+
+
             v = transform.InverseTransformDirection(v);                             //velocityをワールド座標系からローカル座標系に変換
 
             frontBackSpeed = v.z;
             turnSpeed = -v.x;
-            
+
+
+            if (this.gameObject.name == "PolyartMouse (1)")
+                Debug.Log(this.gameObject.name + " : frontBackSpeed : " + m_CharacterController.velocity);
+
             m_Animator.SetFloat(AnimatorParaName.Speed, frontBackSpeed);
             m_Animator.SetFloat(AnimatorParaName.Turn, turnSpeed);
         }

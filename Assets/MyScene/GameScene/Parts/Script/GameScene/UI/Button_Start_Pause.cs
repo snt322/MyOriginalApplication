@@ -7,8 +7,9 @@ using UnityEngine;
 /// </summary>
 public class Button_Start_Pause : MonoBehaviour
 {
+    [SerializeField, Tooltip("GameTimerスクリプトをアタッチしてください")]
+    private GameTimer m_GameTimer = null;
     
-    bool isPaused = false;
 
     private void Start()
     {
@@ -17,16 +18,15 @@ public class Button_Start_Pause : MonoBehaviour
 
     public void Button_StartPause()
     {
-        if(isPaused)
+        bool isPaused = m_GameTimer.StartPause();
+
+        if(isPaused)                                //ポーズ中だったのを解除中にする
         {
-            Time.timeScale = 1;
             gameObject.GetComponentInChildren<UnityEngine.UI.Text>().text = "Playing";
         }
         else
-        {
-            Time.timeScale = 0;
+        {                                           //ポーズ解除中だったのをポーズにする。
             gameObject.GetComponentInChildren<UnityEngine.UI.Text>().text = "Pause";
         }
-        isPaused = !isPaused;
     }
 }

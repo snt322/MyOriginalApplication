@@ -4,16 +4,20 @@ using UnityEngine;
 
 
 
-
+/// <summary>
+/// Player(UnityChan)を制御するスクリプト
+/// タッチパネルまたはマウス、キーボード入力は別スクリプトMyInput.KeyInputから取得する
+/// </summary>
 [RequireComponent(typeof(CharacterController))]
-//[RequireComponent(typeof(Animator))]
-public class UnityChanController : MonoBehaviour {
+[RequireComponent(typeof(MyInput.KeyInput))]
+public class UnityChanController : MonoBehaviour
+{
 
     [SerializeField]
     private Attack_Damage_Controller m_Attack_Damage_Controller = null;                 //Attack_Damage_Controllerスクリプト内でPlayerの状態を管理しているので取得する
 
     [SerializeField]
-    private UnityChanAnimatorController m_UnityChanAnimatorController= null;
+    private UnityChanAnimatorController m_UnityChanAnimatorController = null;
 
     //最大移動速度
     private float m_MaxSpeed = 5;
@@ -25,19 +29,29 @@ public class UnityChanController : MonoBehaviour {
     //重力
     private float m_Gravity = -9.8f;
 
+    //KeyInputスクリプトからセットされるキー入力結果(方向ベクトル)
+    private Vector3 m_Input = new Vector3();
+    //KeyInputスクリプトからセットされるキー入力結果(回転角度)
+    private float m_RoteDeg = 0.0f;
+
     //CharacterController
     private CharacterController m_ChController = null;
-    
+
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         m_ChController = gameObject.GetComponent<CharacterController>() as CharacterController;
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        float rotDeg = 0;
-        Vector3 keyInput = GetInput(ref rotDeg);    //戻り値はキャラクタのローカル座標方向のキー入力、戻り値ref rotDegはローカル座標Y軸周りの回転
+    // Update is called once per frame
+    void Update()
+    {
+
+        float rotDeg = m_RoteDeg;
+        Vector3 keyInput = m_Input;
+
+//        Vector3 keyInput = GetInput(ref rotDeg);    //戻り値はキャラクタのローカル座標方向のキー入力、戻り値ref rotDegはローカル座標Y軸周りの回転
 
         bool isUnityChanNotDead = m_Attack_Damage_Controller.PlayerHealthState != MyClasses.enumHealthState.DEAD;          //UnityChanが倒された場合
         bool isUnityChanDamageMotion = m_UnityChanAnimatorController.isDAMAGE_AnimationPlaying();                          //UnityChanがダメージを受けるモーションを実行中?
@@ -77,7 +91,7 @@ public class UnityChanController : MonoBehaviour {
 
 
 
-        return new Vector3(x,y,z);
+        return new Vector3(x, y, z);
     }
 
     //void Move
@@ -92,7 +106,7 @@ public class UnityChanController : MonoBehaviour {
         Vector3 moveDir = new Vector3(movDistPerFrame.x, movDistPerFrame.y, movDistPerFrame.z);
 
         //バックの場合
-        if(moveDir.z < 0)
+        if (moveDir.z < 0)
         {
             moveDir = moveDir * m_MaxBackSpeed * Time.deltaTime;
         }
@@ -108,13 +122,25 @@ public class UnityChanController : MonoBehaviour {
         //回転
         float rotDeg = rotDegPerFrame * m_MaxRot * Time.deltaTime;
         gameObject.transform.Rotate(0, rotDeg, 0);
-        
+
         //移動
         m_ChController.Move(moveDir);
-//        m_ChController.SimpleMove(moveDir);
+        //        m_ChController.SimpleMove(moveDir);
 
     }
 
+    /// <summary>
+    /// 外部のKeyInput.csスクリプトで取得したVector3を受け取る
+    /// </summary>
+    public Vector3 InputKeyVect
+    {
+        set { this.m_Input = value; }
+    }
+
+    public float InputKeyRot
+    {
+        set { m_RoteDeg = value; }
+    }
 
 
 }

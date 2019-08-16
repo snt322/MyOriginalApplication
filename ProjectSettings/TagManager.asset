@@ -18,6 +18,11 @@ TagManager:
   - Button_Pause_Save
   - Score
   - OnlyOneObjInApp
+  - Debug_Text
+  - Touch_UP
+  - Touch_Down
+  - Touch_Left
+  - Touch_Right
   layers:
   - Default
   - TransparentFX

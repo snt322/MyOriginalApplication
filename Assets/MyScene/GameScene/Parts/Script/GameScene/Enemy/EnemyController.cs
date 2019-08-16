@@ -37,17 +37,24 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private GameObject m_RaycastLauncher = null;
 
-    [SerializeField]
-    private Animator m_EnemyAnimator = null;
 
     [SerializeField]
     private Enemy_Attack_Damege_Controller m_Enemy_Attack_Damege_Controller = null;                 //このスクリプト内でEnemyオブジェクトの健康状態を保持
 
     private readonly float m_AttacRange = 1f;                                                     //このオブジェクトの攻撃レンジ
 
-    private readonly float m_MoveSpeed = 3.0f;                                                      //このオブジェクトの移動速度
+    private readonly float m_ConstMoveSpeed = 3.0f;                                                      //このオブジェクトの移動速度
 
     private float m_SearchLength2 = 10.0f * 10.0f;                                                  //Enemyオブジェクトの索敵距離
+
+    [SerializeField]
+    private float m_Rotate = 0;
+
+    [SerializeField]
+    private float m_MoveSpeed = 0;
+
+    private Vector3 m_InitialForward = new Vector3();
+
 
     //重力
     private float m_Gravity = -9.8f;
@@ -59,6 +66,7 @@ public class EnemyController : MonoBehaviour
         string tagStr = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.Player);
         m_TargetPlayer = GameObject.FindGameObjectWithTag(tagStr);
 
+        m_InitialForward = gameObject.transform.forward;                        //配置されたオブジェクトの初期の向き
 
         StartCoroutine(SearchTargetCoroutine());
     }
@@ -66,7 +74,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float rotDeg = 0;
+        float rotDeg = m_Rotate;
         Vector3 moveDir = new Vector3();
 
 
@@ -75,9 +83,6 @@ public class EnemyController : MonoBehaviour
         Move(moveDir);
 
     }
-
-    private int counter = 0;
-
 
     /// <summary>
     /// コルーチン内でPlayerを探索する
@@ -90,7 +95,7 @@ public class EnemyController : MonoBehaviour
             switch (m_TargetFindState)
             {
                 case enumFindTargetState.NotFind:                                   //ターゲットを捕捉していない場合
-                    if(FindTargetWithBoxRay())
+                    if (IsFindTargetWithBoxRay())
                     {
                         m_TargetFindState = enumFindTargetState.Find;               //捕捉中へ設定を変更
                     }
@@ -106,7 +111,7 @@ public class EnemyController : MonoBehaviour
                     }
                     break;
             }
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.02f);
         }
     }
 
@@ -159,16 +164,22 @@ public class EnemyController : MonoBehaviour
         maxDistance = Vector3.Magnitude(diffVect);                                            //PlayerオブジェクトとこのEnemyオブジェクト間の距離
 
         isRayCastFind = UnityEngine.Physics.Raycast(originPosVect, directionVect, maxDistance, layerMask);     //レイキャスト、trueの場合はPlayer／Enemy間に障害物がある
-        
+
         return !isRayCastFind;
 
     }
 
     /// <summary>
-    /// BoxRayでPlayerを探索する
+    /// BoxRayでPlayerを探索する。
+    /// Playerを発見したらtrueを返す
+    /// 
+    /// Playerの発見方法
+    /// ⓪Playerとこのオブジェクトの距離が探索範囲内にあること
+    /// ①RaycastでPlayerオブジェクトを探索する
+    /// ②Playerとこのオブジェクトの間に障害物が有り、Raycastが障害物に阻まれるか判定する
     /// </summary>
-    /// <returns></returns>
-    private bool FindTargetWithBoxRay()
+    /// <returns>true:Playerを発見</returns>
+    private bool IsFindTargetWithBoxRay()
     {
         //ターゲット(Player)とこのオブジェクト間の距離を計算
         Vector3 thisPosVect = m_RaycastLauncher.transform.position;
@@ -191,7 +202,7 @@ public class EnemyController : MonoBehaviour
         Vector3 originPosVect = m_RaycastLauncher.transform.position;                 //ワールド座標でのレイの開始地点、Enemyオブジェクトのワールド座標位置
         Vector3 directionVect = m_RaycastLauncher.transform.forward;                  //レイの方向、ゲームオブジェクトの前方向へ
 
-        Vector3 halfExtentVect = new Vector3(0.25f, 0.25f, 0.25f);
+        Vector3 halfExtentVect = new Vector3(1, 1, 1);
 
         float maxDistance = 10.0f;                                                  //レイが衝突を検知する最大距離
         int layerMask;                                                              //レイヤーマスク、レイキャストするときに選択的に衝突を無視するために使用する。
@@ -200,7 +211,7 @@ public class EnemyController : MonoBehaviour
         bool isRayCastFind = false;
 
         isRayCastFind = Physics.BoxCast(originPosVect, halfExtentVect, directionVect, Quaternion.identity, maxDistance, layerMask);
-//        isRayCastFind = UnityEngine.Physics.Raycast(originPosVect, directionVect, maxDistance, layerMask);     //レイキャスト
+        //        isRayCastFind = UnityEngine.Physics.Raycast(originPosVect, directionVect, maxDistance, layerMask);     //レイキャスト
         if (!isRayCastFind)
         {
             //EnemyオブジェクトがPlayerの方向を向いていないので処理を抜ける
@@ -215,9 +226,6 @@ public class EnemyController : MonoBehaviour
         isRayCastFind = UnityEngine.Physics.Raycast(originPosVect, directionVect, maxDistance, layerMask);     //レイキャスト、trueの場合はPlayer／Enemy間に障害物がある
 
         return !isRayCastFind;
-
-
-        return false;
     }
 
     /// <summary>
@@ -255,7 +263,7 @@ public class EnemyController : MonoBehaviour
         float maxDistance = 10.0f;                                                  //レイが衝突を検知する最大距離
 
         Gizmos.DrawLine(originPosVect, originPosVect + maxDistance * directionVect);
-        Gizmos.DrawWireCube(originPosVect + directionVect * maxDistance, new Vector3(0.25f, 0.25f, 0.25f));
+        Gizmos.DrawWireCube(originPosVect + directionVect * maxDistance, new Vector3(1, 1, 1));
     }
 
 
@@ -288,10 +296,11 @@ public class EnemyController : MonoBehaviour
     private void GetMoveRotDirection(ref Vector3 moveDistPerFrame, ref float rotDegPerFrame)
     {
         //Enemyの状態enumHealthStateによって移動の可否を判定
-        if(m_Enemy_Attack_Damege_Controller.EnemyHealthState == MyClasses.enumHealthState.DEAD)
+        if (m_Enemy_Attack_Damege_Controller.EnemyHealthState == MyClasses.enumHealthState.DEAD)
         {
             moveDistPerFrame = new Vector3();                                               //移動無し
             rotDegPerFrame = 0;                                                             //回転無し
+
             return;                                                                         //処理を抜ける
         }
 
@@ -308,26 +317,51 @@ public class EnemyController : MonoBehaviour
 
                     this.gameObject.transform.forward = moveDistPerFrame;                              //向きを変える
 
-                    moveDistPerFrame *= m_MoveSpeed;
+                    moveDistPerFrame *= m_ConstMoveSpeed;
 
                     moveDistPerFrame.y = m_Gravity;                                                   //重力加速度を付与
 
-                    if(canAttackLeng())                                                               //攻撃範囲内に以上に近寄らない
+                    if (canAttackLeng())                                                               //攻撃範囲内に以上に近寄らない
                     {
                         moveDistPerFrame.x = 0.0f;
                         moveDistPerFrame.z = 0.0f;
                     }
 
-
-
+                    {
+                        //Playerを発見した場合は、Enemyのアニメーションレイヤー(0)のみを実行する
+                        Animator animator = gameObject.transform.root.GetComponent<Animator>();
+                        animator.SetLayerWeight(animator.GetLayerIndex("Test"), 0);
+                    }
                 }
                 break;
             default:
-                moveDistPerFrame.x = 0;
-                moveDistPerFrame.y = m_Gravity;
-                moveDistPerFrame.z = 0;
+                {
+                    {
+                        //Playerを未発見の場合は、Enemyのアニメーションレイヤー(0)にレイヤー(1)を加算して実行する
+                        //アニメーションレイヤー名を一旦"Test"とする。後でEnumeratorに定義すること!!
+                        Animator animator = gameObject.transform.root.GetComponent<Animator>();
+                        animator.SetLayerWeight(animator.GetLayerIndex("Test"),1f);
+                    }
 
-                rotDegPerFrame = 0;
+
+
+
+                    //初期の向きに対してY軸周りのなす角をrotDegPerFrameとする
+                    Vector3 fowardDir = m_InitialForward;
+                    fowardDir = Quaternion.Euler(0, rotDegPerFrame, 0) * fowardDir;             //初期の向きからY軸周りにrotDegPerFrame回転
+                    this.gameObject.transform.forward = Vector3.Normalize(fowardDir);           //回転した方向にモデルを向ける
+
+
+                    //ローカル座標をワールド座標に変換する
+                    moveDistPerFrame = this.gameObject.transform.forward;
+
+
+                    moveDistPerFrame *= m_MoveSpeed;
+
+                    moveDistPerFrame.y = m_Gravity;                                                     //重力加速度を付与
+
+
+                }
                 break;
         }
 
@@ -340,7 +374,6 @@ public class EnemyController : MonoBehaviour
         //移動
         (this.gameObject.GetComponent<CharacterController>() as CharacterController).Move(moveDistPerFrame);
 
-        moveDistPerFrame.y = 0;
     }
 
 }

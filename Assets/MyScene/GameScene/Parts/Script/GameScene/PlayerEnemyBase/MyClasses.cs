@@ -56,7 +56,8 @@ namespace MyClasses
         private enumHealthState m_State = enumHealthState.NORMAL;
         private float[] m_DamageRatio = { 0.75f, 1.25f };
 
-        public BaseCharacter() {
+        public BaseCharacter()
+        {
             //本クラスの部位による攻撃力を初期化
             int len = System.Enum.GetValues(typeof(enumAttackMeans)).Length;     //enumAttackMeansの数だけ攻撃力の数を指定
             m_Attacks = new int[len];
@@ -85,7 +86,7 @@ namespace MyClasses
             int actualDamage = 0;
 
             tmpDamage = givenDamage - this.m_Defence;
-            if(tmpDamage < 0) { tmpDamage = 0; }
+            if (tmpDamage < 0) { tmpDamage = 0; }
 
             tmpDamage = (int)(tmpDamage * UnityEngine.Random.Range(m_DamageRatio[0], m_DamageRatio[1]));
 
@@ -128,7 +129,7 @@ namespace MyClasses
             else
             {
                 m_State = enumHealthState.GET_DAMAGE;                         //ダメージを受けた状態へ         
-                                                                        //ダメージを受けた場合のモーションへ
+                                                                              //ダメージを受けた場合のモーションへ
             }
         }
 
@@ -156,7 +157,8 @@ namespace MyClasses
         //キャラクタを蘇生させる
         public int Resurrection
         {
-            set {
+            set
+            {
                 if (value > m_MaxLife) { this.m_Life = m_MaxLife; }
                 else { this.m_Life = value; }
 

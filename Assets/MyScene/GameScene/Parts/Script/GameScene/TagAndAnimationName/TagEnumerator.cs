@@ -34,6 +34,12 @@ namespace MyEnumerator
         Button_Pause_Save,
         Button_StartScene,
         Score,
+        OnlyOneObjInApp,
+        Debug_Text,
+        Touch_UP,
+        Touch_Down,
+        Touch_Left,
+        Touch_Right,
     }
 
 }
