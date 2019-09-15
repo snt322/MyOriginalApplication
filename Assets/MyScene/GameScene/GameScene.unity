@@ -440,7 +440,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1497730419
+  randomSeed: -80553832
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4476,6 +4476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UnityChanController: {fileID: 827538500}
+  m_Attack_Damage_Controller: {fileID: 827538499}
 --- !u!1 &435768548
 GameObject:
   m_ObjectHideFlags: 0
@@ -4577,7 +4578,7 @@ GameObject:
   - component: {fileID: 530950082}
   - component: {fileID: 530950081}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Score_Time
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5465,7 +5466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &675772034
 Transform:
   m_ObjectHideFlags: 0
@@ -5928,6 +5929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UnityChanController: {fileID: 827538500}
+  m_Attack_Damage_Controller: {fileID: 827538499}
 --- !u!1 &827538494 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1985619881839872, guid: c8274701bd4826646aea55edbab6a5c8,
@@ -5938,6 +5940,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4180523758138214, guid: c8274701bd4826646aea55edbab6a5c8,
     type: 2}
   m_PrefabInternal: {fileID: 1628368298}
+--- !u!114 &827538499 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114581701984600220, guid: c8274701bd4826646aea55edbab6a5c8,
+    type: 2}
+  m_PrefabInternal: {fileID: 1628368298}
+  m_Script: {fileID: 11500000, guid: cb3a5fae0c49bf14384aac033588f355, type: 3}
 --- !u!114 &827538500 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114630088016537204, guid: c8274701bd4826646aea55edbab6a5c8,
@@ -6025,6 +6033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UnityChanController: {fileID: 827538500}
+  m_Attack_Damage_Controller: {fileID: 827538499}
 --- !u!1 &854776598
 GameObject:
   m_ObjectHideFlags: 0
@@ -6469,6 +6478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UnityChanController: {fileID: 827538500}
+  m_Attack_Damage_Controller: {fileID: 827538499}
 --- !u!1 &1111305398
 GameObject:
   m_ObjectHideFlags: 0
@@ -8004,6 +8014,7 @@ GameObject:
   - component: {fileID: 1555239035}
   - component: {fileID: 1555239037}
   - component: {fileID: 1555239036}
+  - component: {fileID: 1555239038}
   m_Layer: 5
   m_Name: Hummer
   m_TagString: Untagged
@@ -8062,6 +8073,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1555239034}
+--- !u!114 &1555239038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1555239034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aceb95450c6e22e43bb0f1660556ff99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1588630787
 GameObject:
   m_ObjectHideFlags: 0

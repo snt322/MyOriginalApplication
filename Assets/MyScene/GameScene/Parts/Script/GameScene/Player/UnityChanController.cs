@@ -12,6 +12,7 @@ using UnityEngine;
 [RequireComponent(typeof(MyInput.KeyInput))]
 public class UnityChanController : MonoBehaviour
 {
+    float a;
 
     [SerializeField]
     private Attack_Damage_Controller m_Attack_Damage_Controller = null;                 //Attack_Damage_Controllerスクリプト内でPlayerの状態を管理しているので取得する
@@ -47,10 +48,8 @@ public class UnityChanController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         float rotDeg = m_RoteDeg;
         Vector3 keyInput = m_Input;
-
 
         bool isUnityChanNotDead = m_Attack_Damage_Controller.PlayerHealthState != MyClasses.enumHealthState.DEAD;          //UnityChanが倒された場合
         bool isUnityChanDamageMotion = m_UnityChanAnimatorController.isDAMAGE_AnimationPlaying();                          //UnityChanがダメージを受けるモーションを実行中?
@@ -59,10 +58,6 @@ public class UnityChanController : MonoBehaviour
         {
             Move(keyInput, rotDeg);                     //キャラクタの移動、回転の実行
         }
-
-
-//        GetKeys();                                  //キーボードから攻撃などの動作入力を受け取る
-
 
     }
 

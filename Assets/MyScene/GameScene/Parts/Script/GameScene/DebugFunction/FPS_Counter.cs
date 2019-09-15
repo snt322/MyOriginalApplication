@@ -1,13 +1,13 @@
-﻿//#define MyDEBUG
-#define DebugOutputText
+﻿#define FPS
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-
-public class FPS_Counter : MonoBehaviour {
+#if FPS
+public class FPS_Counter : MonoBehaviour
+{
 
     private float m_CountStartTime = 0;
     private float m_Fps = 0;
@@ -16,14 +16,11 @@ public class FPS_Counter : MonoBehaviour {
     private float m_FpsCalInterval = 0.1f;
 
 
-#if DebugOutputText
     private UnityEngine.UI.Text m_Text = null;
     private Vector2 m_TextSizeRatio = new Vector2(0.3f, 0.2f);                  //スクリーンサイズに対するテキストサイズ、x成分はスクリーン幅に対するテキスト幅の比率
-#endif
 
     void Start()
     {
-#if DebugOutputText
         m_Text = GameObject.Find("FPS_Text").GetComponent<UnityEngine.UI.Text>();
 
         //テキストのサイズを調整する
@@ -32,18 +29,14 @@ public class FPS_Counter : MonoBehaviour {
         m_Text.rectTransform.anchorMax = new Vector2(0, 0);
         m_Text.rectTransform.anchorMin = new Vector2(0, 0);
         m_Text.rectTransform.position = new Vector2(Screen.width / 20.0f, Screen.height / 5.0f);
-
-
-#endif
     }
 
 
     // Update is called once per frame
-    void Update () {
-#if DebugOutputText
+    void Update()
+    {
         MyFpsFunction();                                                //FPSを計算し、メンバ変数m_Fpsへ格納する
         OutputToText();
-#endif
     }
 
     void OutputToText()
@@ -75,9 +68,8 @@ public class FPS_Counter : MonoBehaviour {
             m_CountStartTime = Time.time;
             m_Fps = CalFPS(m_Elapse, m_DrawCount);
             m_DrawCount = 0;
-#if MyDEBUG
-            Debug.Log(m_Fps);
-#endif
+
+//            Debug.Log(m_Fps);
         }
     }
 
@@ -98,3 +90,4 @@ public class FPS_Counter : MonoBehaviour {
 
 
 }
+#endif
