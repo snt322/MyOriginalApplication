@@ -466,7 +466,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1736672160
+  randomSeed: 186288878
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4291,6 +4291,39 @@ Prefab:
     - target: {fileID: 1394923058826814, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
       propertyPath: m_Name
       value: PolyartMouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054612308039058, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.001943558
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054612308039058, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071039
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054612308039058, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0.0019433792
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054612308039058, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710427
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054612308039058, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.0012969971
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054612308039058, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.015289322
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054612308039058, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.17274393
+      objectReference: {fileID: 0}
+    - target: {fileID: 114902472344983496, guid: 43d1bff9d85b7d543a0805a901051413,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 43d1bff9d85b7d543a0805a901051413, type: 2}
