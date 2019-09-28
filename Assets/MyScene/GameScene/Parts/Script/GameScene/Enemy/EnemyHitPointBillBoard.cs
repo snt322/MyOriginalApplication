@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class EnemyHitPointBillBoard : MonoBehaviour {
 
-    [SerializeField]
+    [SerializeField, Tooltip("ビルボードが向く方向のカメラ")]
     Camera m_BillBoardTargetCam = null;
     [SerializeField]
     private UnityEngine.UI.Image m_HitPointProgressBar = null;
 
 
-	// Use this for initialization
-	void Start () {
+    /// <summary>
+    /// Use this for initialization 
+    /// </summary>
+    void Start () {
         string mainCamTag = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.MainCamera);
         m_BillBoardTargetCam = GameObject.FindGameObjectWithTag(mainCamTag).GetComponent<Camera>() as Camera;
         if(m_BillBoardTargetCam == null)
@@ -22,7 +24,7 @@ public class EnemyHitPointBillBoard : MonoBehaviour {
         UnityEngine.UI.Image[] images = GetComponentsInChildren<UnityEngine.UI.Image>() as UnityEngine.UI.Image[];
         foreach(UnityEngine.UI.Image img in images)
         {
-            if(img.tag == "EnamyHitPointTag")
+            if(img.tag == "EnemyHitPointTag")
             {
                 m_HitPointProgressBar = img;
             }
@@ -31,14 +33,17 @@ public class EnemyHitPointBillBoard : MonoBehaviour {
 
 //        m_HitPointProgressBar = GameObject.FindGameObjectWithTag("EnemyHitPointTag").GetComponent<UnityEngine.UI.Image>() as UnityEngine.UI.Image;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        BillBoard();
 
+    /// <summary>
+    /// Update is called once per frame 
+    /// </summary>
+    void Update () {
+        BillBoard();
     }
 
-    //カメラの方向を向く
+    /// <summary>
+    /// カメラの方向に向きを変えるメソッド、Update()内で呼び出される。
+    /// </summary>
     void BillBoard()
     {
         Transform camTform = m_BillBoardTargetCam.transform;

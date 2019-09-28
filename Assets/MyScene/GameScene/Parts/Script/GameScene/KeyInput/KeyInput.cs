@@ -1,39 +1,100 @@
-﻿using System.Collections;
+﻿//#define MYDEBUG
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace MyInput
 {
-
-    public class KeyInput : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class KeyInput : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IEventSystemHandler
     {
         delegate void InputFunctionDelegate();                  //デリゲート
         InputFunctionDelegate myKeyDownFunc;                    //Inputキー押下デリゲート
         InputFunctionDelegate myKeyUpFunc;                      //Inputキー離しデリゲート
 
+        /// <summary>
+        /// タッチ中の判定フラグ
+        /// </summary>
         private bool m_IsPressed = false;
-        private UnityEngine.UI.Text m_Text = null;
 
+#if MYDEBUG
+        /// <summary>
+        /// デバッグ用CanvasのUI.Text
+        /// </summary>
+        private UnityEngine.UI.Text m_DebugText = null;
+#endif
         [SerializeField,Tooltip("Player(UnityChan)の移動を制御するスクリプトをアタッチしてください")]
         private UnityChanController m_UnityChanController = null;
-        [SerializeField, Tooltip("Player(UnityChan)のアクション（攻撃など）を制御するスクリプトをアタッチしてください)")]
-        private Attack_Damage_Controller m_Attack_Damage_Controller = null;
 
+#if UNITY_EDITOR
+        [SerializeField, Tooltip("Player(UnityChan)のアクション（攻撃など）を制御するスクリプトをアタッチしてください")]
+        private Attack_Damage_Controller m_Attack_Damage_Controller = null;
+#endif
+
+        /// <summary>
+        /// キーボード入力から取得したPlayerの移動ベクトル
+        /// </summary>
+        private static Vector3 m_KeyValue = new Vector3();
+        /// <summary>
+        /// タッチパネル入力から取得したPlayerの移動ベクトル
+        /// </summary>
+        private static Vector3 m_TouchValue = new Vector3();
+        /// <summary>
+        /// Playerの移動ベクトル、キーボードとタッチパネルの入力の合算。最大長さ1.0のベクトル
+        /// </summary>
         private static Vector3 m_InputValue = new Vector3();
+
 
         private Vector3 m_MousePos = new Vector3();
 
+        /// <summary>
+        /// キーボード入力から取得したPlayerのY軸周りの回転速度
+        /// </summary>
+        private static float m_KeyRotateDeg = 0.0f;
+        /// <summary>
+        /// タッチパネル入力から取得したPlayerのY軸周りの回転速度
+        /// </summary>
+        private static float m_TouchRotateDeg = 0.0f;
+        /// <summary>
+        /// Playerの回転速度、キーボードとタッチパネル入力の合算。最大1.0
+        /// </summary>
         private static float m_RotateDeg = 0.0f;
 
         //重力
         private const float m_Gravity = -9.8f;
 
-        private void SetFunc()
+        /// <summary>
+        /// MouseDown位置をセットする
+        /// </summary>
+        private void SetMouseDownPos(PointerEventData eventData)
         {
-            m_MousePos = Input.mousePosition;
-            m_Text.color = Color.red;
+            m_MousePos = eventData.position;
         }
+
+#if MYDEBUG
+        /// <summary>
+        /// デバッグ用CanvasのUI.Textメッセージをリセットする
+        /// </summary>
+        private void ResetDebugTextMsg()
+        {
+            m_DebugText.text = "押下されていません。";
+        }
+        /// <summary>
+        /// デバッグ用CanvasのUI.Text色を戻す
+        /// </summary>
+        private void ResetDebugTextColor()
+        {
+            m_DebugText.color = Color.green;
+        }
+        /// <summary>
+        /// デバッグ用CanvasのUI.Text色を変更する
+        /// </summary>
+        private void SetDebugTextColor()
+        {
+            m_DebugText.color = Color.red;
+        }
+#endif
 
         /// <summary>
         /// 押下処理
@@ -45,9 +106,11 @@ namespace MyInput
 
             myKeyDownFunc();                                      //Inputキー押下処理
 
-            SetFunc();
+            SetMouseDownPos(eventData);
+#if MYDEBUG
+            SetDebugTextColor();
+#endif
         }
-
         /// <summary>
         /// 押下終了処理
         /// </summary>
@@ -57,15 +120,19 @@ namespace MyInput
             m_IsPressed = false;
 
             myKeyUpFunc();                                    //Inputキー離し処理
-
-            ResetFunc();
+#if MYDEBUG
+            ResetDebugTextMsg();
+            ResetDebugTextColor();
+#endif
         }
 
 
         // Use this for initialization
         void Start()
         {
-            m_Text = GameObject.Find("Debug_Text").GetComponent<UnityEngine.UI.Text>();
+#if MYDEBUG
+            m_DebugText = GameObject.Find("Debug_Text").GetComponent<UnityEngine.UI.Text>();
+#endif
 
             Debug.Log(gameObject.tag);
 
@@ -103,15 +170,32 @@ namespace MyInput
                 Vector3 tmpMousePos = Input.mousePosition;
                 if (tmpMousePos != m_MousePos)
                 {
-                    m_Text.text = "押下中の移動";
+#if MYDEBUG
+                    m_DebugText.text = "押下中の移動";
+#endif
                 }
             }
 
 
 #if UNITY_EDITOR
-            m_InputValue = EditorInput(ref m_RotateDeg);
+            m_KeyValue = EditorInput(ref m_KeyRotateDeg);
+            
+            Vector3 tmpVect = m_KeyValue + m_TouchValue;
+            tmpVect.y = 0.0f;
+            tmpVect = UnityEngine.Vector3.ClampMagnitude(tmpVect, 1.0f);
+            tmpVect.y = m_Gravity;
+            m_InputValue = tmpVect;
+
+            m_RotateDeg = m_TouchRotateDeg + m_KeyRotateDeg;
+
             GetKeys();
+
+#elif UNITY_ANDROID
+            m_InputValue= m_TouchValue;
+            m_RotateDeg = m_TouchRotateDeg;
 #endif
+
+
             m_UnityChanController.InputKeyVect = m_InputValue;
             m_UnityChanController.InputKeyRot = m_RotateDeg;
         }
@@ -122,20 +206,20 @@ namespace MyInput
         /// </summary>
         private void UpTouchDownFunc()
         {
-            m_Text.text = "UPが押下。";
+#if MYDEBUG
+            m_DebugText.text = "UPが押下。";
+#endif
 
-            m_InputValue.z = 1.0f;
-
-            m_InputValue.y = m_Gravity;
+            m_TouchValue.z = 1.0f;
+            m_TouchValue.y = m_Gravity;
         }
         /// <summary>
         /// UPキー相当の離し処理
         /// </summary>
         private void UpTouchUpFunc()
         {
-            m_InputValue.z = 0.0f;
-
-            m_InputValue.y = m_Gravity;
+            m_TouchValue.z = 0.0f;
+            m_TouchValue.y = m_Gravity;
         }
 
         /// <summary>
@@ -143,18 +227,19 @@ namespace MyInput
         /// </summary>
         private void DownTouchDownFunc()
         {
-            m_Text.text = "Downが押下";
-
-            m_InputValue.z = -1.0f;
-            m_InputValue.y = m_Gravity;
+#if MYDEBUG
+            m_DebugText.text = "Downが押下";
+#endif
+            m_TouchValue.z = -1.0f;
+            m_TouchValue.y = m_Gravity;
         }
         /// <summary>
         /// Downキー相当の離し処理
         /// </summary>
         private void DownTouchUpFunc()
         {
-            m_InputValue.z = 0.0f;
-            m_InputValue.y = m_Gravity;
+            m_TouchValue.z = 0.0f;
+            m_TouchValue.y = m_Gravity;
         }
 
         /// <summary>
@@ -162,18 +247,20 @@ namespace MyInput
         /// </summary>
         private void LeftTouchDownFunc()
         {
-            m_Text.text = "Leftが押下";
+#if MYDEBUG
+            m_DebugText.text = "Leftが押下";
+#endif
 
-            m_RotateDeg = 1.0f;
-            m_InputValue.y = m_Gravity;
+            m_TouchRotateDeg = - 1.0f;
+            m_TouchValue.y = m_Gravity;
         }
         /// <summary>
         /// Leftキー相当の離し処理
         /// </summary>
         private void LeftTouchUpFunc()
         {
-            m_RotateDeg = 0.0f;
-            m_InputValue.y = m_Gravity;
+            m_TouchRotateDeg = 0.0f;
+            m_TouchValue.y = m_Gravity;
         }
 
         /// <summary>
@@ -181,24 +268,20 @@ namespace MyInput
         /// </summary>
         private void RightTouchDownFunc()
         {
-            m_Text.text = "Rightが押下";
+#if MYDEBUG
+            m_DebugText.text = "Rightが押下";
+#endif
 
-            m_RotateDeg = -1.0f;
-            m_InputValue.y = m_Gravity;
+            m_TouchRotateDeg = + 1.0f;
+            m_TouchValue.y = m_Gravity;
         }
         /// <summary>
         /// Rightキー相当の離し処理
         /// </summary>
         private void RightTouchUpFunc()
         {
-            m_RotateDeg = 0.0f;
-            m_InputValue.y = m_Gravity;
-        }
-
-        private void ResetFunc()
-        {
-            m_Text.text = "押下されていません。";
-            m_Text.color = Color.green;
+            m_TouchRotateDeg = 0.0f;
+            m_TouchValue.y = m_Gravity;
         }
 
 #if UNITY_EDITOR
@@ -217,11 +300,9 @@ namespace MyInput
 
             return new Vector3(x,y,z);
         }
-#endif
-
-#if UNITY_EDITOR
         /// <summary>
         /// UnityEditor上でのInput処理(移動、回転以外)
+        /// キーボード入力
         /// </summary>
         private void GetKeys()
         {
@@ -234,11 +315,6 @@ namespace MyInput
             }
         }
 #endif
-
-
-
-
-
 
     }
 }

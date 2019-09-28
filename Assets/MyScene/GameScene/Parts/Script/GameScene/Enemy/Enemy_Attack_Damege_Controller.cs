@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
+public class Enemy_Attack_Damege_Controller : MonoBehaviour, IDamage
 {
     [SerializeField]
     private Attack_Damage_Controller m_Player = null;
@@ -13,21 +13,23 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
 
 
 
-    private EnemyHitPointBillBoard m_ThisHPBar = null;
+    private EnemyHitPointProgressBar m_ThisHPBar = null;
 
     private MyClasses.BaseCharacter m_Condition = new MyClasses.BaseCharacter(100, 100, MyClasses.enumHealthState.NORMAL);
 
-	// Use this for initialization
-	void Start () {
-        m_ThisHPBar = this.gameObject.GetComponentInChildren<EnemyHitPointBillBoard>() as EnemyHitPointBillBoard;
+    // Use this for initialization
+    void Start()
+    {
+        m_ThisHPBar = this.gameObject.GetComponentInChildren<EnemyHitPointProgressBar>() as EnemyHitPointProgressBar;
         m_ThisAnimator = this.gameObject.GetComponent<Animator>() as Animator;                                              //このスクリプトがアタッチされているゲームオブジェクトのアニメータを取得する
 
         string tagStr = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.Player);         //PlayerタグのGameObjectのAttack_Damage_Controllerスクリプトを取得する
         m_Player = GameObject.FindGameObjectWithTag(tagStr).GetComponent<Attack_Damage_Controller>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
     }
 
 
@@ -48,7 +50,7 @@ public class Enemy_Attack_Damege_Controller : MonoBehaviour , IDamage
          * http://ninagreen.hatenablog.com/entry/2015/08/25/201607
          */
         MyEnumerator.EnumeratorTag enumTag = (MyEnumerator.EnumeratorTag)System.Enum.Parse(typeof(MyEnumerator.EnumeratorTag), collider.tag);
-        
+
         switch (enumTag)
         {
             case MyEnumerator.EnumeratorTag.UnityChanWeapon:             //UnityChanの武器に接触した場合

@@ -130,10 +130,6 @@ public class Enemy_RandamWalk : MonoBehaviour
 
     }
 
-    private void walk()
-    {
-
-    }
 
     IEnumerator MotionRoutine()
     {
