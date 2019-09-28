@@ -21,11 +21,17 @@ public class Dropdown_ImageResolution : MonoBehaviour
     void Start()
     {
         m_Dropdown = gameObject.GetComponent<UnityEngine.UI.Dropdown>() as UnityEngine.UI.Dropdown;
-        m_RTexture = m_MainCamera.targetTexture;
+
+        RenderTexture tmpTxt = m_MainCamera.targetTexture;
+
+        m_RTexture = new RenderTexture(tmpTxt);
+        m_MainCamera.targetTexture = m_RTexture;
+        m_TextureTarget.texture = m_RTexture;
     }
 
     public void OnDropdownValueChange()
     {
+
         int v = m_Dropdown.value;
         int height = 1, width = 1;
         switch (v)
@@ -62,7 +68,19 @@ public class Dropdown_ImageResolution : MonoBehaviour
 
         Debug.Log("width=" + width + " : height=" + height);
 
+        RenderTexture tmpRTexture = m_MainCamera.targetTexture;
+
         m_RTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default);
+        m_MainCamera.targetTexture = m_RTexture;
+
+        if (tmpRTexture != null)
+        {
+            RenderTexture.Destroy(tmpRTexture);
+            tmpRTexture = null;
+        }
+
+
+        m_RTexture.name = "width=" + width + " : height=" + height;
 
 
         m_MainCamera.targetTexture = m_RTexture;
