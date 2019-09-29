@@ -40,6 +40,7 @@ namespace MyEnumerator
         Touch_Left,
         Touch_Right,
         Button_Start_Pause,
+        PlayerCamera,
     }
 
 }

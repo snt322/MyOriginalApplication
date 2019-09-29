@@ -23,6 +23,7 @@ TagManager:
   - Touch_Left
   - Touch_Right
   - Button_Start_Pause
+  - PlayerCamera
   layers:
   - Default
   - TransparentFX

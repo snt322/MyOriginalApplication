@@ -19,8 +19,8 @@ public class BillBoardBase : MonoBehaviour
     {
         if (m_BillBoardTargetCam == null)
         {
-            string mainCamTag = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.MainCamera);
-            m_BillBoardTargetCam = GameObject.FindGameObjectWithTag(mainCamTag).GetComponent<Camera>() as Camera;
+            string cameraTag = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.PlayerCamera);
+            m_BillBoardTargetCam = GameObject.FindGameObjectWithTag(cameraTag).GetComponent<Camera>() as Camera;
             if(m_BillBoardTargetCam == null)
             {
                 MyDebug.MyDebugLog.Log("メインカメラが見つかりませんでした。");
