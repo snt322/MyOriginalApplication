@@ -36,7 +36,8 @@ public class GameController_TimeLimit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalRemainingTime();
+        float remainingTime = CalRemainingTime();           //残り時間を計算
+        CheckIsTimeUp(remainingTime);                       //タイムアップ(m_RemainingTime<=0)の場合ゲームを強制ポーズする
     }
 
     /// <summary>
@@ -69,15 +70,13 @@ public class GameController_TimeLimit : MonoBehaviour
     {
         if (!m_IsPausing)
         {
-            UnityEngine.Time.timeScale = StoppingTimeScale;
+            UnityEngine.Time.timeScale = StoppingTimeScale;               //Playing⇒Pausingへ変更
         }
         else
         {
-            UnityEngine.Time.timeScale = PlayingTimeScale;
+            UnityEngine.Time.timeScale = PlayingTimeScale;               //Pausing⇒Playingへ変更
         }
-
         m_IsPausing = !m_IsPausing;
-
     }
 
     /// <summary>
@@ -92,6 +91,23 @@ public class GameController_TimeLimit : MonoBehaviour
         return m_RemaingTime;
     }
 
+    private void CheckIsTimeUp(float v)
+    {
+        if(v <= 0.0f)
+        {
+            m_RemaingTime = 0.0f;       //m_RemaingTime(残りプレイ時間)がマイナスにならないように0をセット
+
+            StopGameImmediate();        //ゲームを強制的にポーズする
+        }
+    }
+    /// <summary>
+    /// 直ちにゲームをポーズする
+    /// </summary>
+    private void StopGameImmediate()
+    {
+        m_IsPausing = true;
+        UnityEngine.Time.timeScale = StoppingTimeScale;               //Playing⇒Pausingへ変更
+    }
 
     /// <summary>
     /// 外部に残りプレイ時間を渡すメソッド 

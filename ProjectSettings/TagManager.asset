@@ -24,6 +24,7 @@ TagManager:
   - Touch_Right
   - Button_Start_Pause
   - PlayerCamera
+  - GameOverController
   layers:
   - Default
   - TransparentFX

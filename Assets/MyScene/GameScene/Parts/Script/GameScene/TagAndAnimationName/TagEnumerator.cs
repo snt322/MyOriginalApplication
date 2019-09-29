@@ -41,6 +41,7 @@ namespace MyEnumerator
         Touch_Right,
         Button_Start_Pause,
         PlayerCamera,
+        GameOverController,
     }
 
 }

@@ -2,25 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController_GameOver : MonoBehaviour
+/// <summary>
+/// ①PlayerのLifeが0になるとAnimator[UnityChan_Animator]のAnimation[UnityChan_GameOver]が再生される。
+/// ②UnityChan_GameOverアニメーション内でAnimationEventが実行される。
+/// ③UnityChan_GameOver.csのSendGameOverMsg()メソッドが実行される。
+/// ④SendGameOverMsg()内でEventSystems.ExecuteEvents.Execute<IExecuteGameOver>でGameObject[GameOverController]にイベントメッセージを送る
+/// ⑤GameObject[GameOverController]がゲームオーバー処理を行う。
+/// </summary>
+public class GameController_GameOver : MonoBehaviour, IExecuteGameOver
 {
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
     public void GameOver()
     {
         Debug.Log("Game Over!!!!");
     }
 
+    void IExecuteGameOver.ISendExecuteGameOver()
+    {
+        GameOver();
+    }
 }
