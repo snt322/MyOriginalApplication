@@ -30,7 +30,6 @@ namespace MyEnumerator
         Enemy_Raycast_Search,
         UnityChan_LifeProgressBar,
         UnityChan_MagicAttack,
-        Button_Menu,
         Button_Pause_Save,
         Button_StartScene,
         Score,
@@ -40,6 +39,7 @@ namespace MyEnumerator
         Touch_Down,
         Touch_Left,
         Touch_Right,
+        Button_Start_Pause,
     }
 
 }

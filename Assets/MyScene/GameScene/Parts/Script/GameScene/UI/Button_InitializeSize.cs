@@ -31,7 +31,7 @@ public class Button_InitializeSize : MonoBehaviour
 
         string targetTag;
 
-        targetTag = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.Button_Menu);
+        targetTag = System.Enum.GetName(typeof(MyEnumerator.EnumeratorTag), MyEnumerator.EnumeratorTag.Button_Start_Pause);
         if (gameObject.tag == targetTag)                                                                                //メニューボタンの場合
         {
             tmpRect.anchorMax = new Vector2(0, 1);

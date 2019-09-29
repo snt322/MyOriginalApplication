@@ -466,7 +466,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 186288878
+  randomSeed: -2044467182
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5939,6 +5939,17 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1628368298}
   m_Script: {fileID: 11500000, guid: b4db55a6aeb2d16448ea905ceeeb39b1, type: 3}
+--- !u!114 &827538504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 827538494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5e19e695825b54194bcce5fb98c18d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &835776331
 GameObject:
   m_ObjectHideFlags: 0
@@ -6277,7 +6288,6 @@ GameObject:
   - component: {fileID: 1029539748}
   - component: {fileID: 1029539750}
   - component: {fileID: 1029539749}
-  - component: {fileID: 1029539751}
   m_Layer: 5
   m_Name: Text_Time
   m_TagString: Untagged
@@ -6342,18 +6352,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1029539747}
---- !u!114 &1029539751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1029539747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdc1d10d810e10c4b8bb4013d04dedca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_LimitSeconds: 60
 --- !u!1 &1043525497
 GameObject:
   m_ObjectHideFlags: 0
@@ -6532,8 +6530,8 @@ GameObject:
   - component: {fileID: 1111305403}
   - component: {fileID: 1111305404}
   m_Layer: 5
-  m_Name: Button_Pause
-  m_TagString: Button_Menu
+  m_Name: Button_Start_Pause
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6596,8 +6594,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1111305404}
-        m_MethodName: Button_StartPause
+      - m_Target: {fileID: 1686568728}
+        m_MethodName: StartStopGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6664,7 +6662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f90c4ca8ac966d4ca9f02a02e45a851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GameTimer: {fileID: 1029539751}
+  m_GCTimeLimit: {fileID: 1686568728}
 --- !u!1 &1137504820
 GameObject:
   m_ObjectHideFlags: 0
@@ -10497,7 +10495,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4674781118092190, guid: c8274701bd4826646aea55edbab6a5c8, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.02682632
+      value: -0.026826322
       objectReference: {fileID: 0}
     - target: {fileID: 4674781118092190, guid: c8274701bd4826646aea55edbab6a5c8, type: 2}
       propertyPath: m_LocalPosition.z
@@ -10680,6 +10678,63 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c8274701bd4826646aea55edbab6a5c8, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1686568726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1686568727}
+  - component: {fileID: 1686568729}
+  - component: {fileID: 1686568728}
+  m_Layer: 0
+  m_Name: TimeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1686568727
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686568726}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1958535264}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1686568728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686568726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81008b429c6bf5a4aab68d0d33c5e3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InitTimeLimit: 60
+  m_RemaingTime: 10
+  m_IsSetInitRemainitTime: 0
+--- !u!114 &1686568729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686568726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025d386b1545f04408e110c4c7aeefb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TimeLimitTxt: {fileID: 1029539749}
+  m_TimeController: {fileID: 1686568728}
 --- !u!1001 &1723226514
 Prefab:
   m_ObjectHideFlags: 0
@@ -11680,6 +11735,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e919d67d4875c48a8058df4d93fdbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1958535263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1958535264}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1958535264
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1958535263}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -97.561, y: 2.17, z: -150.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1686568727}
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1963360121
 GameObject:
   m_ObjectHideFlags: 0
